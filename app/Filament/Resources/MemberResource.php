@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
+use Filament\Notifications\Notification;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\MemberResource\Pages;
@@ -26,11 +27,14 @@ class MemberResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->columnSpan(2),
                 Forms\Components\TextInput::make('age')
-                    ->required(),
+                    ->required()
+                    ->columnSpan(1),
                 Forms\Components\TextInput::make('gender')
-                    ->required(),
+                    ->required()
+                    ->columnSpan(1),
             ]);
     }
 
@@ -57,6 +61,13 @@ class MemberResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->successNotification(
+                Notification::make()
+                ->success()
+                ->title('Member deleted')
+                ->body('The user has been deleted successfully.'),
+                )
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

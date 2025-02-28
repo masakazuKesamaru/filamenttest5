@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('userlogas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id')->constrained();
+            $table->foreignId('member_id')
+            ->constrained()
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            
             $table->float('height');
             $table->float('weight');
             $table->timestamps();
